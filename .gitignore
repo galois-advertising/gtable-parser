@@ -1,0 +1,10 @@
+*.xml
+*.l.hh
+*.l.cc
+*.y.hh
+*.y.cc
+build
+ddl2xml/include/config.h
+gql2xml/include/config.h
+*.pyc
+gqlparser/generator/temp

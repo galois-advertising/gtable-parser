@@ -1,0 +1,16 @@
+SeekIndex:
+select 
+    AdxTable.Adx_id, AdxTable.usr_id 
+from 
+    Index scan limit $ScanLimit
+    join AdxTable on (Index.Adx_id = AdxTable.Adx_id)
+    left join User on ((AdxTable.plan_id, $Version) = (User.plan_id, User.version))
+    join PlanTable on (AdxTable.plan_id  = PlanTable.plan_id)
+where
+    Index.exact_sign = $KeySign
+    and (
+        AdxTable.new_match_type = $match_type1
+        or AdxTable.new_match_type = $match_type2
+        or AdxTable.new_match_type = $match_type3
+    ) 
+limit $Limit;
