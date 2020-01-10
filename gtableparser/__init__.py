@@ -11,6 +11,6 @@ class ddlparser(pyddl2xml.pyddl2xml):
     def log(self, type, log): 
         sys.stderr.write("[ddl2xml][%s] %s\n" % (type, log))
 
-class gqlparser(pygql2xml.pygql2xml): 
+class gtableparser(pygql2xml.pygql2xml): 
     def log(self, type, log): 
         sys.stderr.write("[gql2xml][%s] %s\n" % (type, log))

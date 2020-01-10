@@ -1,4 +1,4 @@
-project(gqlparser)
+project(gtableparser)
 cmake_minimum_required(VERSION 2.8)
 set (Tutorial_VERSION_MAJOR 1)
 set (Tutorial_VERSION_MINOR 0)

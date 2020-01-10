@@ -12,7 +12,7 @@ gtable-parser is a tool for translating *.ddl or *.gql file inito xml file.
 
 Installation dependency:
 * cmake 2.8+
-* [cmake_setuptools](https://github.com/galois-advertising/cmake_setuptools)
+* [cmake_setuptools](https://github.com/galois-advertising/cmake_setup)
 * python 2.7+
 * bison 2.3+
 * flex 2.5+
@@ -36,17 +36,17 @@ and re-run the commands above.
 ```python
 import os
 import sys
-import gqlparser
+import gtableparser
 
 with open("schema/Datatable.ddl", 'r') as f: 
     datatable = f.read()
-p = gqlparser.ddlparser()
+p = gtableparser.ddlparser()
 xml = p.parse(datatable)
 print xml
 
 with open("schema/SeekIndex.gql", 'r') as f: 
     seekindex = f.read()
-p = gqlparser.gqlparser()
+p = gtableparser.gtableparser()
 xml = p.parse(seekindex)
 print xml
 ```
