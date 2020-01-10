@@ -30,10 +30,10 @@ create dataview UserView on UserSource::UserTable {
 // dataview
 create dataview UserView on UserSource::UserTable {
     property {
-        udf = AdPredictorWinfoPortalUDF;
+        udf = UserViewUDF;
     };
     user_id : uint64;
-    winfo_id : uint64;
+    adx_id : uint64;
     wise_vectors : array char[Constant::MAX_BUF_LEN], opt;
     pc_vectors : array char[Constant::MAX_BUF_LEN], opt;
 
@@ -69,7 +69,7 @@ create datatable UserTableEmpty5 {
         type = HashTable;
     };
     usr_id_1 : uint8, opt;
-    (usr_id_10,usr_id_9) : uint64key,     primary_key;
+    (usr_id_10,usr_id_9) : uint64key, primary_key;
 };
 
 // UserTable
@@ -78,7 +78,6 @@ create datatable UserTable {
         type = HashTable;
         hash_ratio = 0.5; //asdfasdf
         //asdfasdfasdf
-        datapool = SlabMempool32;
     };
 
     usr_id_1 : uint8, opt;
