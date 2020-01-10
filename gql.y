@@ -526,7 +526,7 @@ stmt_columns: stmt_columns ',' stmt_column
 
 stmt_column: IDENTIFIER
 {
-    $$ = g2x->new_column($1)
+    $$ = g2x->new_column($1);
 }
 | IDENTIFIER '.' IDENTIFIER
 {

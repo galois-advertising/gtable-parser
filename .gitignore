@@ -8,3 +8,5 @@ ddl2xml/include/config.h
 gql2xml/include/config.h
 *.pyc
 gqlparser/generator/temp
+gqlparser.egg-info
+dist

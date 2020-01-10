@@ -1,17 +1,15 @@
-
 import os
 import sys
 import gqlparser
 
-with open(sys.argv[1], 'r') as f: 
-    text = f.read()
-if ".def" in sys.argv[1]: 
-    p = gqlparser.ddlparser()
-    xml = p.parse(text)
-elif ".gql" in sys.argv[1]: 
-    p = gqlparser.gqlparser()
-    xml = p.parse(text)
+with open("schema/Datatable.ddl", 'r') as f: 
+    datatable = f.read()
+p = gqlparser.ddlparser()
+xml = p.parse(datatable)
+print xml
 
-with open(sys.argv[1] + ".xml", 'w') as f: 
-    f.write(xml)
-
+with open("schema/SeekIndex.gql", 'r') as f: 
+    seekindex = f.read()
+p = gqlparser.gqlparser()
+xml = p.parse(seekindex)
+print xml

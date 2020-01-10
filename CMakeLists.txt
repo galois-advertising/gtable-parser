@@ -20,15 +20,15 @@ include_directories("${PYTHON_INCLUDE_PATH}")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
-set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb -std=c++2a -fno-strict-aliasing -Wno-register")
-set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall -std=c++2a -fno-strict-aliasing -Wno-register")
-#set(CMAKE_BUILD_TYPE "Release")
-set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb -std=c++17 -fno-strict-aliasing -Wno-register")
+set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall -std=c++17 -fno-strict-aliasing -Wno-register")
+set(CMAKE_BUILD_TYPE "Release")
+#set(CMAKE_BUILD_TYPE "Debug")
 
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
 
-include_directories("${PROJECT_SOURCE_DIR}/../common/util/include")
+include_directories("${PROJECT_SOURCE_DIR}/common/util/include")
 include_directories("${PROJECT_SOURCE_DIR}/common/include")
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
@@ -42,14 +42,14 @@ set(DDL2XML_SRCS
 "${CMAKE_CURRENT_BINARY_DIR}/ddl.y.cc" 
 "${PROJECT_SOURCE_DIR}/src/ddl2xml.cpp" 
 "${PROJECT_SOURCE_DIR}/src/ddl2xml_xml_generator.cpp" 
-"${PROJECT_SOURCE_DIR}/common/src/parser-common.cpp" 
+"${PROJECT_SOURCE_DIR}/src/parser-common.cpp" 
 )
 
 add_executable(ddl2xml ${DDL2XML_SRCS} "${PROJECT_SOURCE_DIR}/src/ddl2xml_main.cpp")
 target_link_libraries(ddl2xml ${LIBXML2_LIBRARIES})
 
 add_library(pyddl2xml SHARED ${DDL2XML_SRCS} 
-"${PROJECT_SOURCE_DIR}/../common/util/src/python_bind.cpp"
+"${PROJECT_SOURCE_DIR}/common/util/src/python_bind.cpp"
 "${PROJECT_SOURCE_DIR}/src/ddl2xml_python_main.cpp")
 target_link_libraries(pyddl2xml ${LIBXML2_LIBRARIES} ${PYTHON_LIBRARIES})
 
@@ -61,13 +61,13 @@ set(GQL2XML_SRCS
 "${CMAKE_CURRENT_BINARY_DIR}/gql.y.cc" 
 "${PROJECT_SOURCE_DIR}/src/gql2xml.cpp" 
 "${PROJECT_SOURCE_DIR}/src/gql2xml_xml_generator.cpp" 
-"${PROJECT_SOURCE_DIR}/common/src/parser-common.cpp" 
+"${PROJECT_SOURCE_DIR}/src/parser-common.cpp" 
 )
 
 add_executable(gql2xml ${GQL2XML_SRCS} "${PROJECT_SOURCE_DIR}/src/gql2xml_main.cpp")
 target_link_libraries(gql2xml ${LIBXML2_LIBRARIES})
 
 add_library(pygql2xml SHARED ${GQL2XML_SRCS} 
-"${PROJECT_SOURCE_DIR}/../common/util/src/python_bind.cpp"
+"${PROJECT_SOURCE_DIR}/common/util/src/python_bind.cpp"
 "${PROJECT_SOURCE_DIR}/src/gql2xml_python_main.cpp")
 target_link_libraries(pygql2xml ${LIBXML2_LIBRARIES} ${PYTHON_LIBRARIES})

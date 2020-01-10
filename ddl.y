@@ -1,11 +1,11 @@
 %{
 #include <iostream>
-#include "ddl2xml.h"
 
 #define YY_DECL
 
-#include "ddl.y.hh"
+#include "ddl2xml.h"
 #include "ddl.l.hh"
+#include "ddl.y.hh"
 
 
 extern int ddllex(YYSTYPE *ddllval, yyscan_t scanner, ddl2xml * d2x);
@@ -190,11 +190,11 @@ stmt_define: TK_HANDLERNAME '=' IDENTIFIER ';' TK_NAMESPACE '=' stmt_type_id ';'
 
 stmt_ddl: stmt_ddl stmt_create_datasource
 {
-    d2x->append_datasources($2)
+    d2x->append_datasources($2);
 }
 | stmt_create_datasource
 {
-    d2x->append_datasources($1)
+    d2x->append_datasources($1);
 }
 | stmt_ddl stmt_create_dataview 
 {
@@ -659,7 +659,7 @@ stmt_notations: stmt_notations ';' TK_NOTATION
 {
     // $$ NotationList *
     $$ = d2x->new_notation_list();
-    $$->push_back($1)
+    $$->push_back($1);
 };
 
 stmt_derivative_columns_items_opt: TK_DERIVATIVE '{' stmt_derivative_columns_items ';' '}' ';'

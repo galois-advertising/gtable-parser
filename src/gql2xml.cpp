@@ -1,5 +1,4 @@
 #include "gql2xml.h"
-#include "gql.y.hh"
 #include "gql.l.hh"
 #include "python_bind.h"
 extern int gqlparse(yyscan_t, gql2xml *);
