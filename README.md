@@ -19,7 +19,7 @@ Installation dependency:
 * gcc c++17+
 
 ```
-$ git clone -recursive git@github.com:galois-advertising/gtable-parser.git
+$ git clone --recursive git@github.com:galois-advertising/gtable-parser.git
 $ cd gtable-parser
 $ python setup.py install
 ```
