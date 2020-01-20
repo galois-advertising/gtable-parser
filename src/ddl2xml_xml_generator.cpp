@@ -120,16 +120,16 @@ void ddl_xml_generator::process_constrain(const Constrain* constrain, xmlNodePtr
 void ddl_xml_generator::process_constrains(const Column* column, xmlNodePtr column_node) {
     xmlNodePtr constrains_node = add_new_child(column_node, "constrains");
     for (auto & col : column->constrains()) {
-        xmlNodePtr constrain_node = add_new_child(constrains_node, "constrains");
+        xmlNodePtr constrain_node = add_new_child(constrains_node, "constrain");
         process_constrain(col, constrain_node);
     }
 }
 
 void ddl_xml_generator::process_column(const Column* column, xmlNodePtr column_node) {
-    xmlNodePtr name_node = add_new_child(column_node, "column_name");
+    xmlNodePtr name_node = add_new_child(column_node, "name");
     add_new_text(name_node, column->data());
 
-    xmlNodePtr type_node = add_new_child(column_node, "ctype");
+    xmlNodePtr type_node = add_new_child(column_node, "type");
 
     if (column->type().data_type() != nullptr) {
         add_new_text(type_node, column->type().data_type());
