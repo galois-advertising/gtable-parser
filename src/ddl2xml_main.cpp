@@ -16,7 +16,8 @@ int main(int argc, char* argv[]) {
     if (argc == 2) {
         file_name = argv[1];
     } else {
-        std::cout <<argv[0]<<" v"<<DEFINE_VAR1<<"."<<DEFINE_VAR2<< std::endl;
+        std::cout <<argv[0]<<" v"<<DEFINE_VAR1<<"."<<DEFINE_VAR2
+            <<" "<<__DATE__<<" "<<__TIME__<< std::endl;
         std::cout << "Usage: " <<argv[0]<<" file.def"<< std::endl;
         return -1;
     }

@@ -42,6 +42,7 @@ bool ddl_xml_generator::build_dom(xmlDocPtr & doc) {
     doc = xmlNewDoc(BAD_CAST"1.0");
     auto root_node = xmlNewNode(nullptr, BAD_CAST"ddl");
     xmlDocSetRootElement(doc, root_node);
+    add_new_child_text(root_node, "parser_build_time", __DATE__ " " __TIME__);
     if (m_d2x.cppcode() != nullptr) {
         add_new_child_text(root_node, "cppcode", m_d2x.cppcode());
     }

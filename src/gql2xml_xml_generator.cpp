@@ -43,6 +43,7 @@ bool gql_xml_generator::build_dom(xmlDocPtr & doc) {
 
 void gql_xml_generator::write_queries(xmlNodePtr root_node) {
     auto & queries = m_g2x.queries();
+    add_new_child_text(root_node, "parser_build_time", __DATE__ " " __TIME__);
     for (auto & it : queries) {
         xmlNodePtr query_node = add_new_child(root_node, "query");
         process_query(it, query_node);
