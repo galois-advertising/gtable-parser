@@ -35,6 +35,7 @@ ID [a-zA-Z][-_a-zA-Z0-9]*
 
 "create"           { CALL_PROCESS_NODE; return TK_CREATE; }
 "datatable"        { CALL_PROCESS_NODE; return TK_DATATABLE; }
+"indextable"       { CALL_PROCESS_NODE; return TK_INDEXTABLE; }
 "datasource"       { CALL_PROCESS_NODE; return TK_DATASOURCE; }
 "dataview"         { CALL_PROCESS_NODE; return TK_DATAVIEW; }
 "dataupdator"      { CALL_PROCESS_NODE; return TK_DATAUPDATOR; }

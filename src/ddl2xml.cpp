@@ -8,6 +8,7 @@ extern void ddl_delete_buffer (YY_BUFFER_STATE b ,yyscan_t yyscanner );
 
 ddl2xml::ddl2xml() {
     m_datatables = new_datatable_list();
+    m_indextables = new_indextable_list();
     m_datasources = new_datasource_list();
     m_dataviews = new_dataview_list();
     m_dataupdators = new_dataupdator_list();

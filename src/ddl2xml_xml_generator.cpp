@@ -55,6 +55,7 @@ bool ddl_xml_generator::build_dom(xmlDocPtr & doc) {
     write_dataviews(root_node);
     write_datasources(root_node);
     write_datatables(root_node);
+    write_indextables(root_node);
     write_dataupdators(root_node);
     write_indexupdators(root_node);
     return true;
@@ -80,6 +81,12 @@ void ddl_xml_generator::add_new_child_text(xmlNodePtr parent_node,
 void ddl_xml_generator::write_datatables(xmlNodePtr root_node) {
     for (auto & dt : m_d2x.datatables()) {
         process_datatable(dt, add_new_child(root_node, "datatable"));
+    }
+}
+
+void ddl_xml_generator::write_indextables(xmlNodePtr root_node) {
+    for (auto & dt : m_d2x.indextables()) {
+        process_indextable(dt, add_new_child(root_node, "indextable"));
     }
 }
 
@@ -160,6 +167,11 @@ void ddl_xml_generator::process_datatable_columns(const DataTable* datatable, xm
     process_ori_columns<DataTable>(datatable, columns_node);
 }
 
+void ddl_xml_generator::process_indextable_columns(const IndexTable* indextable, xmlNodePtr indextable_node) {
+    xmlNodePtr columns_node = add_new_child(indextable_node, "columns_node");
+    process_ori_columns<IndexTable>(indextable, columns_node);
+}
+
 void ddl_xml_generator::process_dataview_columns(const DataView * dataview, xmlNodePtr dataview_node) {
     xmlNodePtr columns_node = add_new_child(dataview_node, "columns_node");
     process_ori_columns<DataView>(dataview, columns_node);
@@ -205,6 +217,16 @@ void ddl_xml_generator::process_datatable(const DataTable* datatable, xmlNodePtr
     process_datatable_columns(datatable, datatable_node);
     process_primary_key(datatable, datatable_node);
     process_notations<DataTable>(datatable, datatable_node);
+}
+
+void ddl_xml_generator::process_indextable(const IndexTable* indextable, xmlNodePtr indextable_node) {
+    assert(indextable != nullptr && indextable_node != nullptr);
+    add_new_child_text(indextable_node, "name", indextable->data());
+    add_new_child_text(indextable_node, "on_table", indextable->on_table());
+    add_new_child_text(indextable_node, "on_column", indextable->on_column()); 
+    process_properties<IndexTable>(indextable, indextable_node);
+    process_indextable_columns(indextable, indextable_node);
+    process_notations<IndexTable>(indextable, indextable_node);
 }
 
 void ddl_xml_generator::process_datasource(const DataSource* datasource, xmlNodePtr datasource_node) {
