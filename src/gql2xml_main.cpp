@@ -21,9 +21,13 @@ int main(int argc, char* argv[]) {
         std::cout << "Usage: " <<argv[0]<<" file.gql"<< std::endl;
         return -1;
     }
-    int ret = g2x.load_from_file(file_name);
-    std::cout<<"load file ["<<file_name<<"] succee."<<std::endl;
-    gql_xml_generator generator(g2x);
-    generator.write_to_file((file_name + ".xml").c_str());
-    return ret;
+    if (g2x.load_from_file(file_name)) {
+        std::cout<<"load file ["<<file_name<<"] succee."<<std::endl;
+        gql_xml_generator generator(g2x);
+        generator.write_to_file((file_name + ".xml").c_str());
+        return 0;
+    } else {
+        std::cout<<"load file ["<<file_name<<"] failed."<<std::endl;
+        return -1;
+    }
 }

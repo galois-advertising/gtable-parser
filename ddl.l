@@ -68,6 +68,7 @@ ID [a-zA-Z][-_a-zA-Z0-9]*
 "primary_key"      { CALL_PROCESS_NODE; return TK_PRIMARYKEY; }
 
 "array"            { CALL_PROCESS_NODE; return TK_ARRAY; }
+"char"             { CALL_PROCESS_NODE; return TK_CHAR; }
 "uint8"            { CALL_PROCESS_NODE; return TK_UINT8; }
 "uint16"           { CALL_PROCESS_NODE; return TK_UINT16; } 
 "uint32"           { CALL_PROCESS_NODE; return TK_UINT32; } 

@@ -21,9 +21,13 @@ int main(int argc, char* argv[]) {
         std::cout << "Usage: " <<argv[0]<<" file.def"<< std::endl;
         return -1;
     }
-    int ret = d2x.load_from_file(file_name);
-    std::cout<<"load file ["<<file_name<<"] succee."<<std::endl;
-    std::shared_ptr<ddl_xml_generator> generator(new ddl_xml_generator(d2x));
-    generator->write_to_file((file_name + ".xml").c_str());
-    return ret;
+    if (d2x.load_from_file(file_name)) {
+        std::cout<<"load file ["<<file_name<<"] succee."<<std::endl;
+        std::shared_ptr<ddl_xml_generator> generator(new ddl_xml_generator(d2x));
+        generator->write_to_file((file_name + ".xml").c_str());
+        return 0;
+    } else {
+        std::cout<<"load file ["<<file_name<<"] failed."<<std::endl;
+        return -1;
+    }
 }

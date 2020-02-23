@@ -30,7 +30,7 @@ bool ddl2xml::load_from_file(const std::string & file_name) {
     }
     ddllex_destroy(scanner);
     fclose(fin);
-    return false;
+    return true;
 }
 
 bool ddl2xml::load_from_string(const std::string & str) {

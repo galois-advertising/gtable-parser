@@ -3,7 +3,7 @@
 #include <vector>
 $}
 
-handlername = adsf;
+handlername = demo;
 namespace=galois::user;
 
 create datasource Empty1
@@ -80,13 +80,13 @@ create datatable UserTable6 {
         //asdfasdfasdf
     };
 
-    usr_id_1 : uint8, opt;
+    usr_id_1 : uint8, range(1,2,3,4,5), opt;
     usr_id_2 : uint16, opt;
     usr_id_3 : uint32, del;
     usr_id_4 : array uint64 [10u];
     usr_id_5 : array bool[MAX_LEN];
-    usr_id_6 : char, range(1,2,3,4,5);
-    usr_id_7: int, default(11);
+    usr_id_6 : array char[12u];
+    usr_id_7 : int, default(11);
     usr_id_8 : long, as(uid8);
     usr_id_9 : float, custom;
     usr_id_10 : binary;

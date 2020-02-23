@@ -19,7 +19,6 @@ bool gql2xml::load_from_file(const std::string & file_name) {
         return false;
     }
     yyscan_t scanner;
-    int ret = 0;
     gqllex_init(&scanner);
     gqlset_in(fin, scanner);
     if (gqlparse(scanner, this) != 0) {

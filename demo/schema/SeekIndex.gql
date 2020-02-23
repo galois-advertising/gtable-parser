@@ -1,4 +1,5 @@
 SeekIndex:
+
 select 
     AdxTable.Adx_id, AdxTable.usr_id 
 from 

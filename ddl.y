@@ -76,6 +76,7 @@ static int ddlerror(yyscan_t scanner, ddl2xml * d2x, const char *msg);
 %token <node> TK_INT32
 %token <node> TK_INT64
 %token <node> TK_INT8
+%token <node> TK_CHAR
 %token <node> TK_MAX_ROW_NUM
 %token <node> TK_PARALLEL_LOAD
 %token <node> TK_REMOVE
@@ -86,7 +87,6 @@ static int ddlerror(yyscan_t scanner, ddl2xml * d2x, const char *msg);
 %token <node> TK_AS
 %token <node> TK_BINARY
 %token <node> TK_BOOL
-%token <node> TK_CHAR
 %token <property> TK_CHUNK_SIZE
 %token <node> TK_CREATE
 %token <node> TK_CUSTOM
@@ -554,6 +554,7 @@ stmt_column_items_type: TK_UINT8
 | TK_BOOL
 | TK_DOUBLE
 | TK_BINARY
+| TK_CHAR
 | stmt_type_id
 ;
 

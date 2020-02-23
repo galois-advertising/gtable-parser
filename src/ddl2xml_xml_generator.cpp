@@ -130,15 +130,16 @@ void ddl_xml_generator::process_column(const Column* column, xmlNodePtr column_n
     xmlNodePtr name_node = add_new_child(column_node, "name");
     add_new_text(name_node, column->data());
 
-    xmlNodePtr type_node = add_new_child(column_node, "type");
+    xmlNodePtr kind_node = add_new_child(column_node, "kind");
 
     if (column->type().data_type() != nullptr) {
-        add_new_text(type_node, column->type().data_type());
-        xmlNewProp(type_node, BAD_CAST("type"), BAD_CAST(column->type().data()));
-        xmlNewProp(type_node, BAD_CAST("length"), BAD_CAST(column->type().len()));
+        add_new_text(kind_node, column->type().data_type());
+        xmlNewProp(kind_node, BAD_CAST("type"), BAD_CAST(column->type().data()));
+        xmlNewProp(kind_node, BAD_CAST("length"), BAD_CAST(column->type().len()));
     }
     else {
-        add_new_text(type_node, column->type().data());
+        add_new_text(kind_node, "basic");
+        xmlNewProp(kind_node, BAD_CAST("type"), BAD_CAST(column->type().data()));
     }
 
     process_constrains(column, column_node);
@@ -149,6 +150,7 @@ template <class Type>
 void ddl_xml_generator::process_ori_columns(const Type* type, xmlNodePtr columns_node) {
     for (auto & col : type->content().columns()) {
         xmlNodePtr column_node = add_new_child(columns_node, "column_node");
+        xmlNewProp(column_node, BAD_CAST("type"), BAD_CAST("original")); 
         process_column(col, column_node);
     }
 }
