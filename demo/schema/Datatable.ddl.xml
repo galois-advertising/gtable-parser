@@ -9,14 +9,14 @@
   <namespace>galois::user</namespace>
   <dataview>
     <name>EmptyUserView</name>
-    <on_level>UserSource::UserTable</on_level>
+    <channel>UserSource::UserTable</channel>
     <properties/>
     <columns_node/>
     <notations/>
   </dataview>
   <dataview>
     <name>UserView</name>
-    <on_level>UserSource::UserTable</on_level>
+    <channel>UserSource::UserTable</channel>
     <properties>
       <udf>UserViewUDF</udf>
     </properties>

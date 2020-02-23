@@ -239,7 +239,7 @@ void ddl_xml_generator::process_datasource(const DataSource* datasource, xmlNode
 void ddl_xml_generator::process_dataview(const DataView * dataview, xmlNodePtr dataview_node) {
     assert(dataview != nullptr && dataview_node != nullptr);
     add_new_child_text(dataview_node, "name", dataview->data());
-    add_new_child_text(dataview_node, "on_level", dataview->on_level()); 
+    add_new_child_text(dataview_node, "channel", dataview->channel()); 
 
     process_properties<DataView>(dataview, dataview_node);
     process_dataview_columns(dataview, dataview_node);

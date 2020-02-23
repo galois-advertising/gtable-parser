@@ -257,7 +257,7 @@ stmt_create_dataview: TK_CREATE TK_DATAVIEW IDENTIFIER TK_ON stmt_type_id '{' st
     // $5 Node *
     // $7 DataViewContent *
     $$ = d2x->new_dataview($3);
-    $$->set_on_level($5);
+    $$->set_channel($5);
     $$->set_content($7);
 }
 ;

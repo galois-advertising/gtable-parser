@@ -103,8 +103,8 @@ public:
 class DataView : public ContentNode {
 public:
     DataView(const Node & node) : ContentNode(node), 
-        m_on_level(nullptr) {}
-    NODE_MEMBER_DEF(on_level)
+        m_channel(nullptr) {}
+    NODE_MEMBER_DEF(channel)
 };
 
 typedef std::list<DataView*> DataViewList;
