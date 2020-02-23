@@ -244,6 +244,7 @@ private:
     NODE_MEMBER_DEF(cppcode)
 
     LIST_MEMBER_DEF(DataTable, datatables)
+    LIST_MEMBER_DEF(IndexTable, indextables)
     LIST_MEMBER_DEF(DataSource, datasources)
     LIST_MEMBER_DEF(DataView, dataviews)
     LIST_MEMBER_DEF(DataUpdator, dataupdators)

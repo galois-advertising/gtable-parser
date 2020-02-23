@@ -42,11 +42,11 @@ static int ddlerror(yyscan_t scanner, ddl2xml * d2x, const char *msg);
     DataSourceContent * datasource_content;
     DataTable * datatable;
     DataTableContent * datatable_content;
+    IndexTable * indextable;
+    IndexTableContent * indextable_content;
     DataUpdator * dataupdator;
     DataView * dataview;
     DataViewContent * dataview_content;
-    IndexTable * indextable;
-    IndexTableContent * indextable_content;
     IndexUpdator * indexupdator;
     Notation * notation;
     NotationList  * notations;
@@ -94,6 +94,7 @@ static int ddlerror(yyscan_t scanner, ddl2xml * d2x, const char *msg);
 %token <node> TK_HEADER
 %token <node> TK_DATABUS
 %token <node> TK_DATATABLE
+%token <node> TK_INDEXTABLE
 %token <node> TK_DATASOURCE 
 %token <node> TK_DATAVIEW
 %token <node> TK_DATAUPDATER
@@ -101,7 +102,6 @@ static int ddlerror(yyscan_t scanner, ddl2xml * d2x, const char *msg);
 %token <node> TK_DEL
 %token <node> FLOAT
 %token <node> TK_HANDLERNAME
-%token <node> TK_INDEXTABLE
 %token <node> TK_INDEXUPDATER
 %token <node> TK_INT
 %token <node> INTEGER
@@ -159,12 +159,14 @@ static int ddlerror(yyscan_t scanner, ddl2xml * d2x, const char *msg);
 // content
 %type <datasource_content> stmt_datasource_desc
 %type <datatable_content> stmt_datatable_desc
+%type <indextable_content> stmt_indextable_desc
 %type <dataview_content> stmt_dataview_desc 
 %type <dataupdator_content> stmt_dataupdator_opt 
 %type <indexupdator_content> stmt_indexupdator_opt 
 //create 
 %type <datasource> stmt_create_datasource
 %type <datatable> stmt_create_datatable
+%type <indextable> stmt_create_indextable
 %type <dataview> stmt_create_dataview
 %type <dataupdator> stmt_create_dataupdator
 %type <indexupdator> stmt_create_indexupdator
@@ -211,6 +213,14 @@ stmt_ddl: stmt_ddl stmt_create_datasource
 | stmt_create_datatable 
 {
     d2x->append_datatables($1);
+}
+| stmt_ddl stmt_create_indextable 
+{
+    d2x->append_indextables($2);
+}
+| stmt_create_indextable 
+{
+    d2x->append_indextables($1);
 }
 | stmt_ddl stmt_create_dataupdator
 {
@@ -259,6 +269,18 @@ stmt_create_datatable: TK_CREATE TK_DATATABLE IDENTIFIER '{' stmt_datatable_desc
     // $5 DataTableContent *
     $$ = d2x->new_datatable($3);
     $$->set_content($5);
+}
+;
+
+stmt_create_indextable: TK_CREATE TK_INDEXTABLE IDENTIFIER TK_ON IDENTIFIER ':' ':' IDENTIFIER '{' stmt_indextable_desc '}' ';' 
+{
+    // $$ IndexTable *
+    // $3 Node *
+    // $5 IndexTableContent *
+    $$ = d2x->new_indextable($3);
+    $$->set_on_table($5);
+    $$->set_on_column($8);
+    $$->set_content($10);
 }
 ;
 
@@ -345,6 +367,20 @@ stmt_datatable_desc: stmt_property_part_opt stmt_columns_items_opt stmt_primary_
     $$->set_notations($4);
 }
 ;
+
+stmt_indextable_desc: stmt_property_part_opt stmt_columns_items_opt stmt_notations_opt 
+{
+    // $$ IndexTableContent *
+    // $1 PropertyList *
+    // $2 ColumnList *
+    // $3 NotationList *
+    $$ = d2x->new_indextable_content();
+    $$->set_properties($1);
+    $$->set_columns($2);
+    $$->set_notations($3);
+}
+;
+
 
 stmt_dataupdator_opt: stmt_property_part_opt stmt_notations_opt 
 {

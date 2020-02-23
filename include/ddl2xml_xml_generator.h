@@ -26,6 +26,7 @@ private:
 
     // write object to file
     void write_datatables(xmlNodePtr root_node);
+    void write_indextables(xmlNodePtr root_node);
     void write_datasources(xmlNodePtr root_node); 
     void write_dataviews(xmlNodePtr root_node);
     void write_dataupdators(xmlNodePtr root_node);
@@ -42,12 +43,14 @@ private:
     template <class Type>
     void process_ori_columns(const Type* type, xmlNodePtr columns_node);
     void process_datatable_columns(const DataTable* datatable, xmlNodePtr datatable_node);
+    void process_indextable_columns(const IndexTable* indextable, xmlNodePtr indextable_node);
     void process_dataview_columns(const DataView * dataview, xmlNodePtr dataview_node);
     void process_derivative_columns(const DataView * dataview, xmlNodePtr columns_node);
     void process_primary_key(const DataTable* datatable, xmlNodePtr datatable_node);
     template <class Type>
     void process_notations(const Type* type, xmlNodePtr parent_node);
     void process_datatable(const DataTable* datatable, xmlNodePtr datatable_node);
+    void process_indextable(const IndexTable* indextable, xmlNodePtr indextable_node);
     void process_datasource(const DataSource* datasource, xmlNodePtr datasource_node);
     void process_dataview(const DataView* dataview, xmlNodePtr dataview_node);
     template <class Type> 
