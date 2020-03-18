@@ -35,7 +35,6 @@ private:
 private:
     void process_constrain(const Constrain* constrain, xmlNodePtr cstr_node);
     void process_constrains(const Column* column, xmlNodePtr column_node);
-    void process_property(const Property* property, xmlNodePtr p_node);
     template <class Type>
     void process_properties(const Type* type, xmlNodePtr portal_node);
     void process_notation(const Notation* notation, xmlNodePtr p_node);

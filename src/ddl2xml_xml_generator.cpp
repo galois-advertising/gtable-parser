@@ -104,17 +104,13 @@ void ddl_xml_generator::write_dataviews(xmlNodePtr root_node) {
     }
 }
 
-void ddl_xml_generator::process_property(const Property* property, xmlNodePtr p_node) {
-    add_new_text(p_node, property->value());
-}
-
 template <class Type>
-void ddl_xml_generator::process_properties(const Type* type, xmlNodePtr portal_node) {
-    xmlNodePtr properties_node = add_new_child(portal_node, "properties");
+void ddl_xml_generator::process_properties(const Type* type, xmlNodePtr p_node) {
     const PropertyList & properties = type->content().properties();    
     for (auto & property : properties) {
-        xmlNodePtr property_node = add_new_child(properties_node, property->data());
-        process_property(property, property_node);
+        xmlNodePtr property_node = add_new_child(p_node, "property");
+        xmlNewProp(property_node, BAD_CAST("name"), BAD_CAST(property->data())); 
+        add_new_text(property_node, property->value());
     }
 }
 
