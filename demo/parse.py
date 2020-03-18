@@ -10,6 +10,6 @@ print xml
 
 with open("schema/SeekIndex.gql", 'r') as f: 
     seekindex = f.read()
-p = gtableparser.gtableparser()
+p = gtableparser.gqlparser()
 xml = p.parse(seekindex)
 print xml
