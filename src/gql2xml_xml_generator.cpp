@@ -37,6 +37,13 @@ bool gql_xml_generator::build_dom(xmlDocPtr & doc) {
     doc = xmlNewDoc(BAD_CAST"1.0");
     xmlNodePtr root_node = xmlNewNode(nullptr, BAD_CAST"gql");
     xmlDocSetRootElement(doc, root_node);
+    add_new_child_text(root_node, "parser_build_time", __DATE__ " " __TIME__);
+    if (m_g2x.has_handler_name()) {
+        add_new_child_text(root_node, "handler", m_g2x.handler_name());
+    }
+    if (m_g2x.has_namespace_name()) {
+        add_new_child_text(root_node, "namespace", m_g2x.namespace_name());
+    }
     write_queries(root_node);
     return true;
 }
@@ -112,8 +119,8 @@ void gql_xml_generator::process_field_conditioner(const FieldConditioner* field_
     for (auto field_it : field_conditioner->fields()) {
         xmlNodePtr field_node = add_new_child(fc, "field");
         if (field_it->has_func_type()) {
-            add_new_child_text(field_node, "func_type", field_it->func_type_value());
-            add_new_child_text(field_node, "name", field_it->name_value());
+            xmlNewProp(field_node, BAD_CAST("apply"), BAD_CAST(field_it->func_type_value()));
+            add_new_text(field_node, field_it->name_value());
         } else {
             add_new_text(field_node, field_it->name_value());
         }

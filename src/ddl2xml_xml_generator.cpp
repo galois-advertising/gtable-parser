@@ -43,13 +43,13 @@ bool ddl_xml_generator::build_dom(xmlDocPtr & doc) {
     auto root_node = xmlNewNode(nullptr, BAD_CAST"ddl");
     xmlDocSetRootElement(doc, root_node);
     add_new_child_text(root_node, "parser_build_time", __DATE__ " " __TIME__);
-    if (m_d2x.cppcode() != nullptr) {
+    if (m_d2x.has_cppcode()) {
         add_new_child_text(root_node, "cppcode", m_d2x.cppcode());
     }
-    if (m_d2x.handler_name() != nullptr) {
+    if (m_d2x.has_handler_name()) {
         add_new_child_text(root_node, "handler", m_d2x.handler_name());
     }
-    if (m_d2x.namespace_name() != nullptr) {
+    if (m_d2x.has_namespace_name()) {
         add_new_child_text(root_node, "namespace", m_d2x.namespace_name());
     }
     write_dataviews(root_node);

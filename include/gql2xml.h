@@ -157,6 +157,8 @@ public:
         m_node_id = 0;
     }
     
+    NODE_MEMBER_DEF(handler_name)
+    NODE_MEMBER_DEF(namespace_name)
     LIST_MEMBER_DEF(Query, queries)
     LIST_MEMBER_DEF(FieldConditioner, field_conditioners)
     LIST_MEMBER_DEF(UnaryConditioner, unary_conditioners)

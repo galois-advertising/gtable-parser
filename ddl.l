@@ -57,6 +57,7 @@ ID [a-zA-Z][-_a-zA-Z0-9]*
 "udf"              { CALL_PROCESS_NODE; return TK_UDF; }
 "sort"             { CALL_PROCESS_NODE; return TK_SORT; }
 "equal"            { CALL_PROCESS_NODE; return TK_EQUAL; }
+"="                { CALL_PROCESS_NODE; return TK_SYMBOL_EQUAL; }
 "index_key_type"   { CALL_PROCESS_NODE; return TK_INDEX_KEY_TYPE; }
 "batch_load"       { CALL_PROCESS_NODE; return TK_BATCH_LOAD; }
 "parallel_load"    { CALL_PROCESS_NODE; return TK_PARALLEL_LOAD; }

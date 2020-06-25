@@ -1,11 +1,13 @@
+handlername = demo;
+namespace = galois::user;
+ 
 SeekIndex:
-
 select 
     AdxTable.Adx_id, AdxTable.usr_id 
 from 
     Index scan limit $ScanLimit
     join AdxTable on (Index.Adx_id = AdxTable.Adx_id)
-    left join User on ((AdxTable.plan_id, $Version) = (User.plan_id, User.version))
+    leftjoin User on ((AdxTable.plan_id, $Version) = (User.plan_id, User.version))
     join PlanTable on (AdxTable.plan_id  = PlanTable.plan_id)
 where
     Index.exact_sign = $KeySign
@@ -14,4 +16,22 @@ where
         or AdxTable.new_match_type = $match_type2
         or AdxTable.new_match_type = $match_type3
     ) 
-limit $Limit;
+    and @len(AdxTable.url_sign) != $zero
+    and @max(AdxTable.bid) >= $one
+    and @not_null(PlanTable.plan_id) = $true
+limit $limit;
+
+FindWithAdxid:
+select 
+    AdxTable.adx_id, UserTable.usr_id, PlanTable.plan_id, UnitTable.unit_id
+from
+    AdxTable
+    join PlanTable on (AdxTable.plan_id = PlanTable.plan_id) 
+    join UserTable on (AdxTable.usr_id = UserTable.usr_id)
+    join UnitTable on (AdxTable.unit_id = UnitTable.unit_id) 
+where 
+    AdxTable.adx_id in $adx_id_list 
+    and AdxTable.plan_id in $planid_list
+    and not AdxTable.owmatch in $owmatch_exclude_list
+    or UserTable.usr_id > $max_user_id
+;

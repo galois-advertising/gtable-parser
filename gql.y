@@ -49,24 +49,28 @@ extern LogicConditioner * make_logic_conditioner(gql2xml * g2x,
     LogicConditioner * logic_conditioner;
 }
 
-%token <node> TK_SELECT TK_FROM TK_WHERE TK_NOT TK_AND TK_OR TK_JOIN TK_ON TK_LEFT
-%token <node> TK_SCAN TK_LIMIT TK_EACH TK_TAG TK_BOOL TK_IS TK_KW_NULL TK_LEN
+%token <node> TK_SELECT TK_FROM TK_WHERE TK_NOT TK_AND TK_OR TK_JOIN TK_ON TK_LEFT_JOIN
+%token <node> TK_SCAN TK_LIMIT TK_EACH TK_TAG TK_BOOL 
+%token <node> TK_FUNC_LEN TK_FUNC_MAX TK_FUNC_NOT_NULL
 %token <node> IDENTIFIER
 %token <node> TK_ALL_STAR
 %token <node> TK_OCCUPIED_SIGN 
 %token <node> TK_INTEGER TK_UNSIGNED_INTEGER TK_FLOAT
-%token <node> TK_EQUAL TK_IN TK_CONTAIN TK_GT TK_NE
+%token <node> TK_SYMBOL_EQUAL TK_IN TK_CONTAIN TK_SYMBOL_GT TK_SYMBOL_GT_EQUAL TK_SYMBOL_LT TK_SYMBOL_LT_EQUAL TK_SYMBOL_NE
+%token <node> TK_HANDLERNAME
+%token <node> TK_NAMESPACE
 
+%type <node> stmt_type_id
 %type <node> stmt_right_op_value
 %type <node> stmt_op
-%type <node> stmt_func_op
+%type <node> stmt_func_name
 %type <node> stmt_name
 %type <node> stmt_join_op
 %type <node> stmt_limit_opt
 %type <node> stmt_scan_limit_opt
 %type <node> stmt_each_limit_opt
 %type <node> stmt_each_scan_limit_opt
-%type <node> stmt_tag_reference
+%type <node> stmt_sub_reference
 %type <column> stmt_column
 %type <columns> stmt_columns
 %type <columns> stmt_field_columns
@@ -76,7 +80,7 @@ extern LogicConditioner * make_logic_conditioner(gql2xml * g2x,
 %type <func_field> stmt_func_field
 %type <conditioner> stmt_arith_conditioner 
 %type <logic_conditioner> stmt_logic_conditioner stmt_where_exp
-%type <logic_conditioner> stmt_tag_conditioner
+%type <logic_conditioner> stmt_sub_conditioner
 %type <field_conditioner> stmt_field_conditioner 
 %type <unary_conditioner> stmt_unary_conditioner
 %type <select> stmt_select
@@ -89,8 +93,32 @@ extern LogicConditioner * make_logic_conditioner(gql2xml * g2x,
 
 %% 
 
-stmt_main: stmt_gqls
+stmt_main: stmt_define stmt_gqls
 | /*empty*/
+;
+
+stmt_define: TK_HANDLERNAME TK_SYMBOL_EQUAL IDENTIFIER ';' TK_NAMESPACE TK_SYMBOL_EQUAL stmt_type_id ';' 
+{
+    g2x->set_handler_name($3);
+    g2x->set_namespace_name($7);
+}
+;
+
+stmt_type_id : stmt_type_id ':'':' IDENTIFIER
+{
+    $$ = $1; // Node
+    std::string &data = $$->mutable_data();
+    data.append("::");
+    data.append($4->data()); //$4 Node
+}
+| ':'':' IDENTIFIER
+{
+    $$ = $3; // Node
+    std::string tmp("::");
+    tmp += $$->data();
+    $$->set_data(tmp.c_str());
+}
+| IDENTIFIER
 ;
 
 stmt_gqls: stmt_gqls stmt_query
@@ -189,7 +217,7 @@ stmt_join_items: stmt_join_items stmt_join_single
 }
 ;
 
-stmt_join_single: stmt_join_op stmt_table TK_ON '(' stmt_column TK_EQUAL stmt_column ')'
+stmt_join_single: stmt_join_op stmt_table TK_ON '(' stmt_column TK_SYMBOL_EQUAL stmt_column ')'
 {
     $2->set_join_type($1);
     ColumnList* on_columns = g2x->new_column_list();
@@ -198,7 +226,7 @@ stmt_join_single: stmt_join_op stmt_table TK_ON '(' stmt_column TK_EQUAL stmt_co
     $2->append_on_columns($7);
     $$ = $2;
 }
-| stmt_join_op stmt_table TK_ON '(' stmt_field_columns TK_EQUAL stmt_field_columns ')'
+| stmt_join_op stmt_table TK_ON '(' stmt_field_columns TK_SYMBOL_EQUAL stmt_field_columns ')'
 {
     $2->set_join_type($1);
     ColumnList* on_columns = g2x->new_column_list();
@@ -238,7 +266,7 @@ stmt_field_columns: '(' stmt_field_columns ')'
 }
 ;
 
-stmt_func_field: stmt_func_op '(' stmt_field ')'
+stmt_func_field: stmt_func_name '(' stmt_field ')'
 {
     FuncField* func_field = g2x->new_func_field();
     func_field->set_func_type($1);
@@ -252,16 +280,12 @@ stmt_func_field: stmt_func_op '(' stmt_field ')'
 }
 ;
 
-stmt_func_op: TK_LEN
-{
-    Node * node = g2x->new_node();
-    std::string func_op_name = "LEN";
-    node->set_data(func_op_name);
-    $$ = node;
-}
+stmt_func_name: TK_FUNC_LEN 
+| TK_FUNC_MAX
+| TK_FUNC_NOT_NULL
 ;
 
-stmt_tag_reference: TK_TAG IDENTIFIER
+stmt_sub_reference: '{' IDENTIFIER '}'
 {
     $$ = $2;
 }
@@ -321,17 +345,17 @@ stmt_logic_conditioner: TK_NOT stmt_logic_conditioner
 {
     $$ = $2;
 }
-| stmt_tag_conditioner
+| stmt_sub_conditioner
 {
     $$ = $1;
 }
 ;
 
-stmt_tag_conditioner: '(' stmt_logic_conditioner stmt_tag_reference ')'
+stmt_sub_conditioner: '(' stmt_logic_conditioner stmt_sub_reference ')'
 {
     $$ = make_logic_conditioner(g2x, $3, $2, nullptr);
 }
-| '(' stmt_arith_conditioner stmt_tag_reference ')'
+| '(' stmt_arith_conditioner stmt_sub_reference ')'
 {
     $$ = make_logic_conditioner(g2x, $3, $2, nullptr);
 }
@@ -354,18 +378,6 @@ stmt_unary_conditioner: '(' stmt_unary_conditioner ')'
     $$->set_id(id);
     $$->set_type($1);
 
-    g2x->append_unary_conditioners($$);
-}
-| stmt_column TK_IS TK_KW_NULL
-{
-    $$ = g2x->new_unary_conditioner();
-    Field* field = g2x->new_field();
-    field->set_name($1);
-    $$->set_field(field);
-    Node* id = g2x->new_node();
-    id->set_data(g2x->get_node_id());
-    $$->set_id(id);
-    $$->set_type($3);
     g2x->append_unary_conditioners($$);
 }
 ;
@@ -457,25 +469,17 @@ stmt_right_op_value: TK_INTEGER
 | TK_OCCUPIED_SIGN
 ;
 
-stmt_op: TK_EQUAL
-| TK_NE
+stmt_op: TK_SYMBOL_EQUAL 
+| TK_SYMBOL_NE
 | TK_IN
-| TK_GT
+| TK_SYMBOL_GT
+| TK_SYMBOL_GT_EQUAL
+| TK_SYMBOL_LT
+| TK_SYMBOL_LT_EQUAL
 | TK_CONTAIN
 ;
 
-stmt_join_op: TK_JOIN
-{
-    $$ = $1;
-}
-| TK_LEFT TK_JOIN
-{
-    $$ = g2x->new_node();
-    std::string left_str = $1->data();
-    std::string join_str = $2->data();
-    std::string join_type = left_str + " " + join_str;
-    $$->set_data(join_type);
-}
+stmt_join_op: TK_JOIN | TK_LEFT_JOIN
 ;
 
 stmt_table: IDENTIFIER stmt_scan_limit_opt stmt_each_scan_limit_opt
@@ -551,8 +555,9 @@ stmt_column: IDENTIFIER
 %%
 
 int gqlerror(yyscan_t scanner, gql2xml * d2x, const char *msg) {
-    int lineno = gqlget_lineno(scanner);
-    fprintf(stderr, "Galois Table complier error line %d : %s \n", lineno, msg);
+    int lineno = -1;
+    lineno = gqlget_lineno(scanner);
+    fprintf(stderr, "Galois Table complier error line [%d] : %s \n", lineno, msg);
     return -1;
 }
 

@@ -29,31 +29,36 @@ ID [a-zA-Z][-_a-zA-Z0-9]*
 
 %%
 
-"select"    { CALL_PROCESS_NODE; return TK_SELECT; }
-"from"      { CALL_PROCESS_NODE; return TK_FROM; }
-"where"     { CALL_PROCESS_NODE; return TK_WHERE; }
-"on"        { CALL_PROCESS_NODE; return TK_ON; }
-"scan"      { CALL_PROCESS_NODE; return TK_SCAN; }
-"limit"     { CALL_PROCESS_NODE; return TK_LIMIT; }
-"each"      { CALL_PROCESS_NODE; return TK_EACH; }
-"tag"       { CALL_PROCESS_NODE; return TK_TAG; }
-"is"        { CALL_PROCESS_NODE; return TK_IS; }
-"len"       { CALL_PROCESS_NODE; return TK_LEN; }
-"*"         { CALL_PROCESS_NODE; return TK_ALL_STAR; }
-"="         { CALL_PROCESS_NODE; return TK_EQUAL; }
-">"         { CALL_PROCESS_NODE; return TK_GT; }
-"!="        { CALL_PROCESS_NODE; return TK_NE; }
-"join"      { CALL_PROCESS_NODE; return TK_JOIN; } 
-"left"      { CALL_PROCESS_NODE; return TK_LEFT; }
-"not"       { CALL_PROCESS_NODE; return TK_NOT; }
-"bool"      { CALL_PROCESS_NODE; return TK_BOOL; }
-"null"      { CALL_PROCESS_NODE; return TK_KW_NULL; }
-"and"       { CALL_PROCESS_NODE; return TK_AND; }
-"or"        { CALL_PROCESS_NODE; return TK_OR; }
-"in"        { CALL_PROCESS_NODE; return TK_IN;}
-"contain"   { CALL_PROCESS_NODE; return TK_CONTAIN;}
+"handlername"      { CALL_PROCESS_NODE; return TK_HANDLERNAME;}
+"namespace"        { CALL_PROCESS_NODE; return TK_NAMESPACE; }
+"select"           { CALL_PROCESS_NODE; return TK_SELECT; }
+"from"             { CALL_PROCESS_NODE; return TK_FROM; }
+"where"            { CALL_PROCESS_NODE; return TK_WHERE; }
+"on"               { CALL_PROCESS_NODE; return TK_ON; }
+"scan"             { CALL_PROCESS_NODE; return TK_SCAN; }
+"limit"            { CALL_PROCESS_NODE; return TK_LIMIT; }
+"each"             { CALL_PROCESS_NODE; return TK_EACH; }
+"tag"              { CALL_PROCESS_NODE; return TK_TAG; }
+"*"                { CALL_PROCESS_NODE; return TK_ALL_STAR; }
+"="                { CALL_PROCESS_NODE; return TK_SYMBOL_EQUAL; }
+">"                { CALL_PROCESS_NODE; return TK_SYMBOL_GT; }
+">="               { CALL_PROCESS_NODE; return TK_SYMBOL_GT_EQUAL; }
+"<"                { CALL_PROCESS_NODE; return TK_SYMBOL_LT; }
+"<="               { CALL_PROCESS_NODE; return TK_SYMBOL_LT_EQUAL; }
+"!="               { CALL_PROCESS_NODE; return TK_SYMBOL_NE; }
+"join"             { CALL_PROCESS_NODE; return TK_JOIN; } 
+"leftjoin"         { CALL_PROCESS_NODE; return TK_LEFT_JOIN; }
+"bool"             { CALL_PROCESS_NODE; return TK_BOOL; }
+"not"              { CALL_PROCESS_NODE; return TK_NOT; }
+"and"              { CALL_PROCESS_NODE; return TK_AND; }
+"or"               { CALL_PROCESS_NODE; return TK_OR; }
+"in"               { CALL_PROCESS_NODE; return TK_IN;}
+"contain"          { CALL_PROCESS_NODE; return TK_CONTAIN;}
+"@len"             { CALL_PROCESS_NODE; return TK_FUNC_LEN;}
+"@max"             { CALL_PROCESS_NODE; return TK_FUNC_MAX;}
+"@not_null"     { CALL_PROCESS_NODE; return TK_FUNC_NOT_NULL;}
 
-"//"        { process_comment(yyscanner, yyinput); }
+"//"               { process_comment(yyscanner, yyinput); }
 
 (\$)({DIGIT}+)|(\$)({ID}) { CALL_PROCESS_NODE; return TK_OCCUPIED_SIGN;}
 {ID} { CALL_PROCESS_NODE; return IDENTIFIER;}

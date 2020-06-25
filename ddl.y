@@ -69,6 +69,7 @@ static int ddlerror(yyscan_t scanner, ddl2xml * d2x, const char *msg);
 %token <node> TK_DATAPOOL
 %token <node> TK_DOUBLE
 %token <node> TK_EQUAL
+%token <node> TK_SYMBOL_EQUAL
 %token <node> TK_HASH_RATIO
 %token <node> TK_INDEX_KEY_TYPE
 %token <node> TK_INSERT
@@ -181,14 +182,12 @@ static int ddlerror(yyscan_t scanner, ddl2xml * d2x, const char *msg);
 stmt_main: stmt_define stmt_ddl | /* statement may be empty */
 ;
 
-stmt_define: TK_HANDLERNAME '=' IDENTIFIER ';' TK_NAMESPACE '=' stmt_type_id ';' 
+stmt_define: TK_HANDLERNAME TK_SYMBOL_EQUAL IDENTIFIER ';' TK_NAMESPACE TK_SYMBOL_EQUAL stmt_type_id ';' 
 {
     d2x->set_handler_name($3);
     d2x->set_namespace_name($7);
 }
 ;
-
-
 
 stmt_ddl: stmt_ddl stmt_create_datasource
 {
@@ -477,7 +476,7 @@ stmt_properties_items: stmt_properties_items ';' stmt_property
 }
 ;
 
-stmt_property: stmt_property_type '=' stmt_property_value
+stmt_property: stmt_property_type TK_SYMBOL_EQUAL stmt_property_value
 {
     // $$ Property *
     // $3 Node *
@@ -799,7 +798,8 @@ stmt_default_opt: TK_DEFAULT
 %%
 
 int ddlerror(yyscan_t scanner, ddl2xml * d2x, const char *msg) {
-    int lineno = ddlget_lineno(scanner);
-    fprintf(stderr, "Galois Table complier error line %d : %s \n", lineno, msg);
+    int lineno = -1;
+    lineno = ddlget_lineno(scanner);
+    fprintf(stderr, "Galois Table complier error line [%d] : %s \n", lineno, msg);
     return -1;
 }

@@ -4,7 +4,7 @@
 $}
 
 handlername = demo;
-namespace=galois::user;
+namespace = galois::user;
 
 create datasource Empty1
 {
