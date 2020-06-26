@@ -36,8 +36,8 @@ ID [a-zA-Z][-_a-zA-Z0-9]*
 "where"            { CALL_PROCESS_NODE; return TK_WHERE; }
 "on"               { CALL_PROCESS_NODE; return TK_ON; }
 "scan"             { CALL_PROCESS_NODE; return TK_SCAN; }
-"limit"            { CALL_PROCESS_NODE; return TK_LIMIT; }
 "each"             { CALL_PROCESS_NODE; return TK_EACH; }
+"limit"            { CALL_PROCESS_NODE; return TK_LIMIT; }
 "tag"              { CALL_PROCESS_NODE; return TK_TAG; }
 "*"                { CALL_PROCESS_NODE; return TK_ALL_STAR; }
 "="                { CALL_PROCESS_NODE; return TK_SYMBOL_EQUAL; }
@@ -56,7 +56,7 @@ ID [a-zA-Z][-_a-zA-Z0-9]*
 "contain"          { CALL_PROCESS_NODE; return TK_CONTAIN;}
 "@len"             { CALL_PROCESS_NODE; return TK_FUNC_LEN;}
 "@max"             { CALL_PROCESS_NODE; return TK_FUNC_MAX;}
-"@not_null"     { CALL_PROCESS_NODE; return TK_FUNC_NOT_NULL;}
+"@not_null"        { CALL_PROCESS_NODE; return TK_FUNC_NOT_NULL;}
 
 "//"               { process_comment(yyscanner, yyinput); }
 

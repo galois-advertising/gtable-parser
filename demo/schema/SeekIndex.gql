@@ -5,10 +5,10 @@ SeekIndex:
 select 
     AdxTable.Adx_id, AdxTable.usr_id 
 from 
-    Index scan limit $ScanLimit
-    join AdxTable on (Index.Adx_id = AdxTable.Adx_id)
-    leftjoin User on ((AdxTable.plan_id, $Version) = (User.plan_id, User.version))
-    join PlanTable on (AdxTable.plan_id  = PlanTable.plan_id)
+    Index scan limit $scanlimit
+    join AdxTable scan limit $scanlimit2 each scan limit $eachscanlimit2 on (Index.Adx_id = AdxTable.Adx_id)
+    leftjoin User scan limit $scanlimit3 on ((AdxTable.plan_id, $Version) = (User.plan_id, User.version))
+    join PlanTable scan limit $scanlimit4 on (AdxTable.plan_id  = PlanTable.plan_id)
 where
     Index.exact_sign = $KeySign
     and (
