@@ -166,7 +166,7 @@ stmt_select: TK_SELECT stmt_columns TK_FROM stmt_table stmt_join_opt
     $$->set_columns($2);
 
     Node* join_type = g2x->new_node();
-    join_type->set_data("FIRST");
+    join_type->set_data("base");
     $4->set_join_type(join_type);
     $4->set_result_limit($8);
     $4->set_each_result_limit($9);
@@ -220,26 +220,30 @@ stmt_join_items: stmt_join_items stmt_join_single
 stmt_join_single: stmt_join_op stmt_table TK_ON '(' stmt_column TK_SYMBOL_EQUAL stmt_column ')'
 {
     $2->set_join_type($1);
-    ColumnList* on_columns = g2x->new_column_list();
-    $2->set_on_columns(on_columns);
-    $2->append_on_columns($5);
-    $2->append_on_columns($7);
+
+    auto left_on_columns = g2x->new_column_list();
+    $2->set_left_on_columns(left_on_columns);
+    $2->append_left_on_columns($5);
+
+    auto right_on_columns = g2x->new_column_list();
+    $2->set_right_on_columns(right_on_columns);
+    $2->append_right_on_columns($7);
+
     $$ = $2;
 }
 | stmt_join_op stmt_table TK_ON '(' stmt_field_columns TK_SYMBOL_EQUAL stmt_field_columns ')'
 {
     $2->set_join_type($1);
-    ColumnList* on_columns = g2x->new_column_list();
-    ColumnList* left_columns = $5;
-    ColumnList* right_columns = $7;
-    ColumnList::iterator col_it;
-    for (col_it = left_columns->begin(); col_it != left_columns->end(); ++col_it) {
-        on_columns->push_back(*col_it);
+    ColumnList* left_on_columns = g2x->new_column_list();
+    ColumnList* right_on_columns = g2x->new_column_list();
+    for (auto col_it = ($5)->begin(); col_it != ($5)->end(); ++col_it) {
+        left_on_columns->push_back(*col_it);
     }
-    for (col_it = right_columns->begin(); col_it != right_columns->end(); ++col_it) {
-        on_columns->push_back(*col_it);
+    for (auto col_it = ($7)->begin(); col_it != ($7)->end(); ++col_it) {
+        right_on_columns->push_back(*col_it);
     }
-    $2->set_on_columns(on_columns);
+    $2->set_left_on_columns(left_on_columns);
+    $2->set_right_on_columns(right_on_columns);
     $$ = $2;
 }
 ;

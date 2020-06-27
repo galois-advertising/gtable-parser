@@ -85,9 +85,16 @@ void gql_xml_generator::process_query(const Query * query, xmlNodePtr query_node
             xmlNewProp(table_node, BAD_CAST("each_result_limit"), BAD_CAST(table_it->each_result_limit_value()));
         }
 
-        if (table_it->has_on_columns()) {
-            for (auto col_it : table_it->on_columns()) {
-                add_new_child_text(table_node, "on_column", col_it->data());
+        if (table_it->has_left_on_columns()) {
+            xmlNodePtr left_on_columns_node = add_new_child(table_node, "left_on_columns");
+            for (auto col_it : table_it->left_on_columns()) {
+                add_new_child_text(left_on_columns_node, "field", col_it->data());
+            }
+        }
+        if (table_it->has_right_on_columns()) {
+            xmlNodePtr right_on_columns_node = add_new_child(table_node, "right_on_columns");
+            for (auto col_it : table_it->right_on_columns()) {
+                add_new_child_text(right_on_columns_node, "field", col_it->data());
             }
         }
     }

@@ -33,7 +33,8 @@ public:
               m_result_limit(nullptr), 
               m_each_scan_limit(nullptr), 
               m_each_result_limit(nullptr), 
-              m_on_columns(nullptr) 
+              m_left_on_columns(nullptr),
+              m_right_on_columns(nullptr)
     {}
 
     NODE_MEMBER_DEF(name)
@@ -42,7 +43,8 @@ public:
     NODE_MEMBER_DEF(result_limit)
     NODE_MEMBER_DEF(each_scan_limit)
     NODE_MEMBER_DEF(each_result_limit)
-    LIST_MEMBER_DEF(Column, on_columns)
+    LIST_MEMBER_DEF(Column, left_on_columns)
+    LIST_MEMBER_DEF(Column, right_on_columns)
 };
 typedef std::list<Table*> TableList;
 
