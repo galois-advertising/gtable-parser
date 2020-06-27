@@ -70,19 +70,19 @@ void gql_xml_generator::process_query(const Query * query, xmlNodePtr query_node
         add_new_child_text(table_node, "name", table_it->name_value());
         
         if (table_it->has_scan_limit() && strlen(table_it->scan_limit_value()) != 0) {
-            xmlNewProp(table_node, BAD_CAST("scan_limit"), BAD_CAST(table_it->scan_limit_value()));
+            add_new_child_text(table_node, "scan_limit", table_it->scan_limit_value());
         }
 
         if (table_it->has_result_limit() && strlen(table_it->result_limit_value()) != 0) {
-            xmlNewProp(table_node, BAD_CAST("result_limit"), BAD_CAST(table_it->result_limit_value()));
+            add_new_child_text(table_node, "result_limit", table_it->result_limit_value());
         }
         
         if (table_it->has_each_scan_limit() && strlen(table_it->each_scan_limit_value()) != 0) {
-            xmlNewProp(table_node, BAD_CAST("each_scan_limit"), BAD_CAST(table_it->each_scan_limit_value()));
+            add_new_child_text(table_node, "each_scan_limit", table_it->each_scan_limit_value());
         }
 
         if (table_it->has_each_result_limit() && strlen(table_it->each_result_limit_value()) != 0) {
-            xmlNewProp(table_node, BAD_CAST("each_result_limit"), BAD_CAST(table_it->each_result_limit_value()));
+            add_new_child_text(table_node, "each_result_limit", table_it->each_result_limit_value());
         }
 
         if (table_it->has_left_on_columns()) {
