@@ -13,6 +13,9 @@ ddl2xml::ddl2xml() {
     m_dataviews = new_dataview_list();
     m_dataupdators = new_dataupdator_list();
     m_indexupdators = new_indexupdator_list();
+    m_handler_name = nullptr;
+    m_namespace_name = nullptr;
+    m_cppcode = nullptr;
 }
 Location & ddl2xml::get_location() {    
     return m_loc;

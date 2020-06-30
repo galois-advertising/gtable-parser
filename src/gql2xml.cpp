@@ -10,6 +10,8 @@ gql2xml::gql2xml() {
     m_field_conditioners = new_field_conditioner_list();
     m_logic_conditioners = new_logic_conditioner_list();
     m_unary_conditioners = new_unary_conditioner_list();
+    m_handler_name = nullptr;
+    m_namespace_name = nullptr;
     m_node_id = 0;
 }
 
