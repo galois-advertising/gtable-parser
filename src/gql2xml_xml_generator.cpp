@@ -60,7 +60,7 @@ void gql_xml_generator::process_query(const Query * query, xmlNodePtr query_node
     add_new_child_text(query_node, "name", query->name_value());
     xmlNodePtr select_node = add_new_child(query_node, "select");
     for (auto it : query->select().columns()) {
-        add_new_child_text(select_node, "column", it->data());
+        add_new_child_text(select_node, "field", it->data());
     }
     xmlNodePtr from_node = add_new_child(query_node, "from");
     for (auto table_it : query->select().join_tables()) {
